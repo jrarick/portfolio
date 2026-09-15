@@ -5,3 +5,11 @@
 # React Router
 /.react-router/
 /build/
+!.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+node_modules
+
+# dotenv environment variable files
+.env.*
+!.env.example
