@@ -1,87 +1,87 @@
-# Welcome to React Router!
+# Portfolio
 
-A modern, production-ready template for building full-stack React applications using React Router.
+A server-rendered portfolio built with React Router 8, Vite+, Tailwind CSS, and Cloudflare Workers.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+## Requirements
 
-## Features
+- Node.js 24 or newer
+- Vite+ (`vp`)
+- A Cloudflare account for deployment
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+## Local development
 
-## Getting Started
-
-### Installation
-
-Install the dependencies:
+Install dependencies and start the React Router development server:
 
 ```bash
-npm install
+vp install
+vp run dev
 ```
 
-### Development
+The app is available at `http://localhost:5173`. The Cloudflare Vite plugin runs server code in the Workers runtime during development.
 
-Start the development server with HMR:
+## Type generation and checks
+
+Generate React Router route types and Cloudflare runtime/binding types:
 
 ```bash
-npm run dev
+vp run cf-typegen
 ```
 
-Your application will be available at `http://localhost:5173`.
+Run the repository checks and TypeScript project build:
 
-## Building for Production
+```bash
+vp check
+vp run typecheck
+```
+
+`worker-configuration.d.ts` is generated from `wrangler.jsonc` and should be regenerated whenever bindings or compatibility settings change.
+
+## Build and preview
 
 Create a production build:
 
 ```bash
-npm run build
+vp run build
 ```
 
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
+Preview a fresh production build in the local Workers runtime:
 
 ```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
+vp run preview
 ```
 
-The containerized application can be deployed to any platform that supports Docker, including:
+Validate the Worker bundle without deploying it:
 
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
+```bash
+vp run cf:dry-run
 ```
 
-## Styling
+## Tests
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+The repository does not contain automated test files yet. `vp test` therefore reports "No test files found" and exits with status 1; the production build, Wrangler dry run, and local Worker preview are the current runtime checks.
 
----
+## Deploy to Cloudflare Workers
 
-Built with ❤️ using React Router.
+Authenticate Wrangler once on your machine:
+
+```bash
+vp exec wrangler login
+```
+
+Then build and deploy the Worker:
+
+```bash
+vp run deploy
+```
+
+The initial deployment uses the `portfolio` Worker name and a `workers.dev` URL. Custom domains can be attached later in the Cloudflare dashboard or Wrangler configuration.
+
+## Cloudflare bindings
+
+This project starts without KV, D1, R2, or other runtime bindings. When a binding is needed:
+
+1. Add it to `wrangler.jsonc`.
+2. Run `vp run cf-typegen`.
+3. Import `cloudflareContext` from `app/context.ts` and access the generated binding in a route loader or action with `context.get(cloudflareContext).env`.
+
+Future MDX content can be compiled into React modules at build time and bundled with the Worker without adding a content database.

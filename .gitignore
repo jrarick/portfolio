@@ -5,10 +5,14 @@
 # React Router
 /.react-router/
 /build/
+
+# Cloudflare Workers
+/.wrangler/
+.dev.vars*
+
 !.vscode/
 !.vscode/settings.json
 !.vscode/extensions.json
-node_modules
 
 # dotenv environment variable files
 .env.*
