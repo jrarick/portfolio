@@ -19,6 +19,27 @@ vp run dev
 
 The app is available at `http://localhost:5173`. The Cloudflare Vite plugin runs server code in the Workers runtime during development.
 
+## Motion Studio
+
+Studio runs with the Vite development server. Press Alt+T (Option+T on macOS)
+to open the timeline, preview an animation edit, and press Apply to save it to source.
+React Router renders its own HTML, so `app/root.tsx` includes the plugin's client
+script only in development. Production builds omit that script and instrumentation.
+
+Set `MTL_AGENT_PROVIDER=codex` in the ignored `.env.local`. The installed Codex SDK
+reuses your existing sign-in.
+
+For private package installs, export `MOTION_TOKEN` in your shell. pnpm 12 does
+not expand credentials from the project's `.npmrc`, so pass its scoped auth
+setting through the environment:
+
+```bash
+env "pnpm_config_//api.motion.dev/npm/:_authToken=$MOTION_TOKEN" vp install
+```
+
+Keep the token out of source control. The `.npmrc` contains only its environment
+reference, and package managers do not automatically load `.env` files.
+
 ## Type generation and checks
 
 Generate React Router route types and Cloudflare runtime/binding types:

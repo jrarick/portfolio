@@ -29,6 +29,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
         <ScrollRestoration />
         <Scripts />
+        {import.meta.env.DEV && <script type="module" src="/@mtl-client" />}
       </body>
     </html>
   )

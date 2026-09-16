@@ -1,6 +1,7 @@
 import { cloudflare } from "@cloudflare/vite-plugin"
 import { reactRouter } from "@react-router/dev/vite"
 import tailwindcss from "@tailwindcss/vite"
+import { motionStudio } from "@motionplus/studio"
 import { defineConfig, lazyPlugins } from "vite-plus"
 
 export default defineConfig(({ mode }) => ({
@@ -20,6 +21,7 @@ export default defineConfig(({ mode }) => ({
   plugins: lazyPlugins(() => [
     ...(mode === "test" ? [] : [cloudflare({ viteEnvironment: { name: "ssr" } })]),
     tailwindcss(),
+    motionStudio(),
     reactRouter(),
   ]),
   resolve: {
